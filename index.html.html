@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Master Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F5F3EE;
+  --surface: #FDFCFA;
+  --border: #DDD9D0;
+  --border-soft: #E8E5DF;
+  --text: #1C1B18;
+  --text-mid: #6B6860;
+  --text-faint: #A8A59E;
+  --accent: #1C1B18;
+  --accent-hover: #3A3830;
+  --chip-bg: #EDEAE3;
+  --chip-hover: #E0DDD5;
+  --output-bg: #EDEAE3;
+  --error-bg: #FBF0EE;
+  --error-text: #8B3A35;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.wrap {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.header-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.logo-mark {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.title {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.subtitle {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+
+/* API Key section */
+.apikey-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.apikey-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.apikey-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  min-width: 0;
+}
+.apikey-input::placeholder { color: var(--text-faint); }
+.apikey-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.apikey-dot.active { background: #5CAD7A; }
+
+/* Examples */
+.examples { margin-bottom: 1.5rem; }
+.examples-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: var(--chip-bg);
+  color: var(--text-mid);
+  cursor: pointer;
+  border: none;
+  font-family: var(--sans);
+  transition: background 0.15s, color 0.15s;
+}
+.chip:hover { background: var(--chip-hover); color: var(--text); }
+
+/* Form */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+.field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+select, textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+select { padding: 9px 10px; cursor: pointer; }
+select:focus, textarea:focus { outline: none; border-color: var(--text-mid); }
+
+.task-wrap { margin-bottom: 14px; }
+textarea {
+  min-height: 108px;
+  padding: 10px 12px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+/* Action row */
+.action-row { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
+.btn-main {
+  padding: 10px 22px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #F5F3EE;
+  border: none;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  letter-spacing: -0.01em;
+}
+.btn-main:hover { background: var(--accent-hover); }
+.btn-main:disabled { opacity: 0.38; cursor: not-allowed; }
+.status {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Spinner */
+.spinner {
+  width: 12px; height: 12px;
+  border: 1.5px solid var(--border);
+  border-top-color: var(--text-mid);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  margin: 0 0 1.5rem;
+  display: none;
+}
+
+/* Output */
+.output { display: none; }
+.output.visible { display: block; }
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.output-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tag-row { display: flex; align-items: center; gap: 8px; }
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: var(--chip-bg);
+  color: var(--text-mid);
+  letter-spacing: 0.04em;
+}
+.copy-btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-mid);
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.copy-btn:hover { background: var(--chip-bg); color: var(--text); }
+
+.prompt-box {
+  background: var(--output-bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 80px;
+}
+
+.meta-grid { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.meta-card {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 11px 13px;
+  border: 1px solid var(--border-soft);
+}
+.meta-card-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.meta-card-value { font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+
+/* Error */
+.error {
+  font-size: 13px;
+  color: var(--error-text);
+  background: var(--error-bg);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  display: none;
+  font-family: var(--mono);
+}
+.error.visible { display: block; }
+
+@media (max-width: 500px) {
+  .form-grid, .meta-grid { grid-template-columns: 1fr; }
+  .apikey-section { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-top">
+      <span class="logo-mark">PM/</span>
+      <span class="title">Prompt Master Studio</span>
+    </div>
+    <div class="subtitle">Describe what you want to build — get a production-ready prompt optimised for your target tool.</div>
+  </div>
+
+  <div class="apikey-section">
+    <span class="apikey-label">API KEY</span>
+    <input class="apikey-input" id="apiKey" type="password" placeholder="sk-ant-…  (your Anthropic API key)" oninput="updateDot()" />
+    <div class="apikey-dot" id="apiDot"></div>
+  </div>
+
+  <div class="examples">
+    <div class="examples-label">try an example</div>
+    <div class="chips">
+      <button class="chip" data-idea="Summarise a PDF contract and flag any unusual clauses" data-tool="Claude (claude.ai / API)">contract review</button>
+      <button class="chip" data-idea="Generate a photorealistic product shot of a ceramic coffee mug on a marble surface, morning light, editorial style" data-tool="Midjourney">product photo</button>
+      <button class="chip" data-idea="Write a cold outreach email to a senior property manager offering our facility management software" data-tool="ChatGPT / GPT-4o">cold email</button>
+      <button class="chip" data-idea="Fix the bug in my Python function that processes JSON from an API response and crashes when a key is missing" data-tool="Cursor / GitHub Copilot (IDE AI)">bug fix</button>
+      <button class="chip" data-idea="Generate a 15-second video clip of a drone rising over a foggy Nordic city at dawn" data-tool="Runway / Sora (video AI)">video scene</button>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Target tool</label>
+      <select id="toolSelect">
+        <option>Claude (claude.ai / API)</option>
+        <option>ChatGPT / GPT-4o</option>
+        <option>o1 / o3 (reasoning models)</option>
+        <option>Gemini 2.x / Gemini 3 Pro</option>
+        <option>Cursor / GitHub Copilot (IDE AI)</option>
+        <option>Midjourney</option>
+        <option>DALL·E 3</option>
+        <option>Stable Diffusion / Flux</option>
+        <option>Runway / Sora (video AI)</option>
+        <option>ElevenLabs (voice AI)</option>
+        <option>Ollama (local model)</option>
+        <option>Qwen2.5 / Qwen3</option>
+        <option>Llama / Mistral (open weight)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Output goal</label>
+      <select id="goalSelect">
+        <option>Write / create something</option>
+        <option>Analyse or summarise</option>
+        <option>Write or fix code</option>
+        <option>Generate an image</option>
+        <option>Generate a video</option>
+        <option>Extract or transform data</option>
+        <option>Answer questions / research</option>
+        <option>Roleplay / persona</option>
+        <option>Workflow automation</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="task-wrap">
+    <div class="field">
+      <label>Describe your task</label>
+      <textarea id="taskInput" placeholder="e.g. I want to summarise long legal contracts and highlight any risky clauses — output as bullet points, aimed at non-lawyers…"></textarea>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn-main" id="generateBtn" onclick="generatePrompt()">Engineer this prompt →</button>
+    <span class="status" id="statusHint"></span>
+  </div>
+
+  <div class="error" id="errorBox"></div>
+
+  <hr class="divider" id="divider">
+
+  <div class="output" id="outputSection">
+    <div class="output-header">
+      <span class="output-label">engineered prompt</span>
+      <div class="tag-row">
+        <span class="tag" id="toolTag">—</span>
+        <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+      </div>
+    </div>
+    <div class="prompt-box" id="promptBox"></div>
+    <div class="meta-grid">
+      <div class="meta-card">
+        <div class="meta-card-label">Strategy</div>
+        <div class="meta-card-value" id="strategyNote">—</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-card-label">Setup</div>
+        <div class="meta-card-value" id="setupNote">—</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.getElementById('taskInput').value = chip.dataset.idea;
+    const sel = document.getElementById('toolSelect');
+    for (let o of sel.options) {
+      if (o.value === chip.dataset.tool) { sel.value = chip.dataset.tool; break; }
+    }
+  });
+});
+
+function updateDot() {
+  const val = document.getElementById('apiKey').value.trim();
+  document.getElementById('apiDot').classList.toggle('active', val.length > 10);
+}
+
+async function generatePrompt() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const task = document.getElementById('taskInput').value.trim();
+  const tool = document.getElementById('toolSelect').value;
+  const goal = document.getElementById('goalSelect').value;
+  const btn = document.getElementById('generateBtn');
+  const hint = document.getElementById('statusHint');
+  const errorBox = document.getElementById('errorBox');
+  const outputSection = document.getElementById('outputSection');
+  const divider = document.getElementById('divider');
+
+  if (!apiKey) {
+    errorBox.textContent = 'Paste your Anthropic API key above to get started.';
+    errorBox.classList.add('visible');
+    return;
+  }
+  if (!task) { document.getElementById('taskInput').focus(); return; }
+
+  btn.disabled = true;
+  hint.innerHTML = '<div class="spinner"></div> Engineering…';
+  errorBox.classList.remove('visible');
+  outputSection.classList.remove('visible');
+  divider.style.display = 'none';
+
+  const systemPrompt = `You are a prompt engineer. You take the user's rough idea, identify the target AI tool, and output a single production-ready prompt — optimised for that specific tool, with zero wasted tokens.
+
+Hard rules:
+- NEVER embed fabrication-prone techniques: Mixture of Experts, Tree of Thought, Graph of Thought, Universal Self-Consistency, or prompt chaining as a layered technique
+- NEVER add Chain of Thought instructions to reasoning-native models (o1, o3, DeepSeek-R1, Qwen3 thinking mode)
+- NEVER pad output with explanations the user did not request
+- NEVER name the framework you are using
+
+Tool-specific guidance:
+- Claude (claude.ai / API): Use XML tags for complex prompts. Be explicit and specific. Provide context and reasoning WHY. Do not over-constrain.
+- ChatGPT / GPT-4o: Strong role assignment in system prompt. Numbered instructions. Crisp numeric constraints. Add "Skip preamble. No caveats. Answer directly." Always set a length cap.
+- o1 / o3 (reasoning models): SHORT clean instructions ONLY. State what you want, not how to think. No CoT, no XML structure. Under 200 words.
+- Gemini 2.x: Add citation grounding. Use explicit format locks.
+- Cursor / GitHub Copilot (IDE AI): Always specify exact file and function scope. Add "Only make changes directly requested."
+- Midjourney: [Subject], [Environment], [Lighting], [Style], [Camera]. Add --ar and --v 6.1. No verbs.
+- DALL·E 3: Sentence-based visual description. Style declaration. Lighting, palette, mood. Under 400 chars.
+- Stable Diffusion / Flux: Noun phrases comma-separated. Positive + negative prompt blocks. Quality boosters at end.
+- Runway / Sora (video AI): Camera movement + subject + duration + mood + cut style.
+- ElevenLabs (voice AI): Emotion + pacing + emphasis markers. Specify voice profile.
+- Ollama (local model): Include system prompt in output. Short simple prompts. Temperature recommendation.
+- Qwen2.5 / Qwen3: System message + user message format. Explicit output format.
+- Llama / Mistral (open weight): Shorter prompts. Simple flat structure. Explicit role in system prompt.
+
+For copywriting/content prompts include fillable placeholders: [TONE], [AUDIENCE], [BRAND VOICE], [PRODUCT NAME] where relevant.
+
+Output EXACTLY this JSON structure, nothing else:
+{
+  "prompt": "the full engineered prompt ready to paste",
+  "target": "exact tool name",
+  "strategy": "one sentence: what was optimised and why",
+  "setup": "short plain-english setup note if genuinely needed, otherwise empty string"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: `Target tool: ${tool}\nOutput goal: ${goal}\nTask description: ${task}\n\nEngineer an optimised prompt for this tool. Output only the JSON.` }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.error?.message || `API error ${res.status}`);
+    }
+
+    const data = await res.json();
+    const raw = data.content?.map(b => b.text || '').join('') || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+
+    let parsed;
+    try { parsed = JSON.parse(clean); }
+    catch { throw new Error('Could not parse response — try again.'); }
+
+    document.getElementById('promptBox').textContent = parsed.prompt || '';
+    document.getElementById('toolTag').textContent = parsed.target || tool;
+    document.getElementById('strategyNote').textContent = parsed.strategy || '—';
+    document.getElementById('setupNote').textContent = parsed.setup || 'No setup needed — paste and go.';
+
+    divider.style.display = 'block';
+    outputSection.classList.add('visible');
+    hint.innerHTML = '';
+
+  } catch (err) {
+    errorBox.textContent = err.message || 'Something went wrong. Please try again.';
+    errorBox.classList.add('visible');
+    hint.innerHTML = '';
+  }
+
+  btn.disabled = false;
+}
+
+function copyPrompt() {
+  const text = document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = 'Copy', 1800);
+  });
+}
+</script>
+</body>
+</html>
