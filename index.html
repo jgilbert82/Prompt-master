@@ -429,7 +429,7 @@ Output EXACTLY this JSON structure, nothing else:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-5',
         max_tokens: 1000,
         system: systemPrompt,
         messages: [{ role: 'user', content: `Target tool: ${tool}\nOutput goal: ${goal}\nTask description: ${task}\n\nEngineer an optimised prompt for this tool. Output only the JSON.` }]
