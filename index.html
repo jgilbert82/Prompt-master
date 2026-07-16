@@ -35,23 +35,58 @@ body {
   padding: 2.5rem 1.5rem 4rem;
 }
 
-.wrap {
-  max-width: 700px;
-  margin: 0 auto;
+.wrap { max-width: 700px; margin: 0 auto; }
+
+/* Lock screen */
+.lock {
+  max-width: 380px;
+  margin: 12vh auto 0;
+  text-align: center;
 }
+.lock-mark {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.lock-title { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 6px; }
+.lock-sub { font-size: 13px; color: var(--text-mid); margin-bottom: 1.5rem; }
+.lock-row { display: flex; gap: 8px; }
+.lock-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  min-width: 0;
+}
+.lock-input:focus { outline: none; border-color: var(--text-mid); }
+.lock-error {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--error-text);
+  margin-top: 10px;
+  min-height: 16px;
+}
+
+.hidden { display: none !important; }
 
 /* Header */
 .header {
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-soft);
-}
-.header-top {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 6px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
 }
+.header-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
 .logo-mark {
   font-family: var(--mono);
   font-size: 11px;
@@ -59,19 +94,24 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.title {
-  font-size: 26px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
-.subtitle {
-  font-size: 14px;
-  color: var(--text-mid);
-  line-height: 1.5;
-}
+.title { font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
+.subtitle { font-size: 14px; color: var(--text-mid); line-height: 1.5; }
 
-
+.sync-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding-bottom: 2px;
+}
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #5CAD7A; flex-shrink: 0; }
+.sync-dot.busy { background: #C9A227; }
+.sync-dot.off { background: var(--border); }
 
 /* Examples */
 .examples { margin-bottom: 1.5rem; }
@@ -99,7 +139,6 @@ body {
 
 /* Form */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-
 .field label {
   display: block;
   font-family: var(--mono);
@@ -123,12 +162,7 @@ select { padding: 9px 10px; cursor: pointer; }
 select:focus, textarea:focus { outline: none; border-color: var(--text-mid); }
 
 .task-wrap { margin-bottom: 14px; }
-textarea {
-  min-height: 108px;
-  padding: 10px 12px;
-  line-height: 1.6;
-  resize: vertical;
-}
+textarea { min-height: 108px; padding: 10px 12px; line-height: 1.6; resize: vertical; }
 
 /* Action row */
 .action-row { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
@@ -168,23 +202,12 @@ textarea {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Divider */
-.divider {
-  border: none;
-  border-top: 1px solid var(--border-soft);
-  margin: 0 0 1.5rem;
-  display: none;
-}
+.divider { border: none; border-top: 1px solid var(--border-soft); margin: 0 0 1.5rem; display: none; }
 
 /* Output */
 .output { display: none; }
 .output.visible { display: block; }
-
-.output-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
+.output-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .output-label {
   font-family: var(--mono);
   font-size: 10px;
@@ -259,20 +282,94 @@ textarea {
 }
 .error.visible { display: block; }
 
+/* Library */
+.library { margin-top: 3rem; padding-top: 1.75rem; border-top: 1px solid var(--border-soft); }
+.library-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.library-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.library-count { font-family: var(--mono); font-size: 10px; color: var(--text-faint); }
+.library-empty {
+  font-size: 13px;
+  color: var(--text-faint);
+  padding: 18px 0;
+  text-align: center;
+  font-style: italic;
+}
+.saved-item {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.saved-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.saved-meta { min-width: 0; flex: 1; }
+.saved-name {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.saved-sub { font-family: var(--mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.03em; }
+.saved-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.mini-btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-mid);
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.mini-btn:hover { background: var(--chip-bg); color: var(--text); }
+.mini-btn.danger:hover { background: var(--error-bg); color: var(--error-text); border-color: var(--error-text); }
+
 @media (max-width: 500px) {
   .form-grid, .meta-grid { grid-template-columns: 1fr; }
+  .saved-top { flex-direction: column; align-items: flex-start; }
+  .header { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<!-- Lock screen -->
+<div class="lock" id="lockScreen">
+  <div class="lock-mark">PM/</div>
+  <div class="lock-title">Prompt Master Studio</div>
+  <div class="lock-sub">Enter your passphrase to continue.</div>
+  <div class="lock-row">
+    <input class="lock-input" id="lockInput" type="password" placeholder="passphrase" autocomplete="current-password" />
+    <button class="btn-main" id="lockBtn" onclick="unlock()">Unlock</button>
+  </div>
+  <div class="lock-error" id="lockError"></div>
+</div>
+
+<!-- Main app -->
+<div class="wrap hidden" id="app">
 
   <div class="header">
-    <div class="header-top">
-      <span class="logo-mark">PM/</span>
-      <span class="title">Prompt Master Studio</span>
+    <div>
+      <div class="header-top">
+        <span class="logo-mark">PM/</span>
+        <span class="title">Prompt Master Studio</span>
+      </div>
+      <div class="subtitle">Describe what you want to build — get a production-ready prompt optimised for your target tool.</div>
     </div>
-    <div class="subtitle">Describe what you want to build — get a production-ready prompt optimised for your target tool.</div>
+    <div class="sync-badge" id="syncBadge">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncText">synced</span>
+    </div>
   </div>
 
   <div class="examples">
@@ -296,7 +393,7 @@ textarea {
         <option>Gemini 2.x / Gemini 3 Pro</option>
         <option>Cursor / GitHub Copilot (IDE AI)</option>
         <option>Midjourney</option>
-        <option>DALL·E 3</option>
+        <option>DALL&middot;E 3</option>
         <option>Stable Diffusion / Flux</option>
         <option>Runway / Sora (video AI)</option>
         <option>ElevenLabs (voice AI)</option>
@@ -329,7 +426,7 @@ textarea {
   </div>
 
   <div class="action-row">
-    <button class="btn-main" id="generateBtn" onclick="generatePrompt()">Engineer this prompt →</button>
+    <button class="btn-main" id="generateBtn" onclick="generatePrompt()">Engineer this prompt &rarr;</button>
     <span class="status" id="statusHint"></span>
   </div>
 
@@ -341,26 +438,119 @@ textarea {
     <div class="output-header">
       <span class="output-label">engineered prompt</span>
       <div class="tag-row">
-        <span class="tag" id="toolTag">—</span>
-        <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+        <span class="tag" id="toolTag">&mdash;</span>
+        <button class="copy-btn" id="saveBtn" onclick="savePrompt()">Save</button>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy</button>
       </div>
     </div>
     <div class="prompt-box" id="promptBox"></div>
     <div class="meta-grid">
       <div class="meta-card">
         <div class="meta-card-label">Strategy</div>
-        <div class="meta-card-value" id="strategyNote">—</div>
+        <div class="meta-card-value" id="strategyNote">&mdash;</div>
       </div>
       <div class="meta-card">
         <div class="meta-card-label">Setup</div>
-        <div class="meta-card-value" id="setupNote">—</div>
+        <div class="meta-card-value" id="setupNote">&mdash;</div>
       </div>
     </div>
+  </div>
+
+  <div class="library">
+    <div class="library-header">
+      <span class="library-label">saved prompts</span>
+      <span class="library-count" id="libraryCount"></span>
+    </div>
+    <div id="libraryList"></div>
   </div>
 
 </div>
 
 <script>
+const WORKER = 'https://anthropic-proxy.jgilbert82.workers.dev';
+const PASS_KEY = 'pm_passphrase';
+const LEGACY_KEY = 'pm_saved_prompts';
+
+let appPassword = localStorage.getItem(PASS_KEY) || '';
+let library = [];
+let currentResult = null;
+
+/* ---------- Lock screen ---------- */
+
+function setSync(state, text) {
+  const dot = document.getElementById('syncDot');
+  dot.className = 'sync-dot' + (state ? ' ' + state : '');
+  document.getElementById('syncText').textContent = text;
+}
+
+async function unlock() {
+  const input = document.getElementById('lockInput');
+  const err = document.getElementById('lockError');
+  const btn = document.getElementById('lockBtn');
+  const val = input.value.trim();
+  if (!val) { input.focus(); return; }
+
+  btn.disabled = true;
+  err.textContent = 'Checking…';
+
+  try {
+    const res = await fetch(WORKER + '/prompts', { headers: { 'x-app-password': val } });
+    if (res.status === 401) { err.textContent = 'Incorrect passphrase.'; btn.disabled = false; return; }
+    if (!res.ok) throw new Error('Could not reach the server.');
+
+    library = await res.json();
+    appPassword = val;
+    localStorage.setItem(PASS_KEY, val);
+
+    document.getElementById('lockScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    err.textContent = '';
+    setSync('', 'synced');
+    await migrateLocal();
+    renderLibrary();
+  } catch (e) {
+    err.textContent = e.message || 'Something went wrong.';
+  }
+  btn.disabled = false;
+}
+
+document.getElementById('lockInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') unlock();
+});
+
+async function boot() {
+  if (!appPassword) return;
+  try {
+    const res = await fetch(WORKER + '/prompts', { headers: { 'x-app-password': appPassword } });
+    if (!res.ok) { localStorage.removeItem(PASS_KEY); return; }
+    library = await res.json();
+    document.getElementById('lockScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    setSync('', 'synced');
+    await migrateLocal();
+    renderLibrary();
+  } catch { /* stay on lock screen */ }
+}
+
+/* One-off: lift any prompts saved in the old local-only version into the cloud */
+async function migrateLocal() {
+  const legacy = localStorage.getItem(LEGACY_KEY);
+  if (!legacy) return;
+  try {
+    const old = JSON.parse(legacy);
+    if (Array.isArray(old) && old.length) {
+      const existing = new Set(library.map(x => x.id));
+      const merged = [...library, ...old.filter(x => !existing.has(x.id))];
+      merged.sort((a, b) => Number(b.id) - Number(a.id));
+      library = merged;
+      await pushLibrary();
+    }
+    localStorage.removeItem(LEGACY_KEY);
+  } catch { /* ignore */ }
+}
+
+/* ---------- Prompt generation ---------- */
+
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
     document.getElementById('taskInput').value = chip.dataset.idea;
@@ -423,10 +613,11 @@ Output EXACTLY this JSON structure, nothing else:
 }`;
 
   try {
-    const res = await fetch('https://anthropic-proxy.jgilbert82.workers.dev', {
+    const res = await fetch(WORKER, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-app-password': appPassword
       },
       body: JSON.stringify({
         model: 'claude-sonnet-5',
@@ -436,6 +627,7 @@ Output EXACTLY this JSON structure, nothing else:
       })
     });
 
+    if (res.status === 401) throw new Error('Session expired — reload and re-enter your passphrase.');
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err?.error?.message || `API error ${res.status}`);
@@ -446,16 +638,24 @@ Output EXACTLY this JSON structure, nothing else:
     const start = raw.indexOf('{');
     const end = raw.lastIndexOf('}');
     if (start === -1 || end === -1) throw new Error('Could not parse response — try again.');
-    const clean = raw.slice(start, end + 1);
 
     let parsed;
-    try { parsed = JSON.parse(clean); }
+    try { parsed = JSON.parse(raw.slice(start, end + 1)); }
     catch { throw new Error('Could not parse response — try again.'); }
 
     document.getElementById('promptBox').textContent = parsed.prompt || '';
     document.getElementById('toolTag').textContent = parsed.target || tool;
     document.getElementById('strategyNote').textContent = parsed.strategy || '—';
     document.getElementById('setupNote').textContent = parsed.setup || 'No setup needed — paste and go.';
+
+    currentResult = {
+      prompt: parsed.prompt || '',
+      target: parsed.target || tool,
+      strategy: parsed.strategy || '',
+      setup: parsed.setup || '',
+      task, tool, goal
+    };
+    document.getElementById('saveBtn').textContent = 'Save';
 
     divider.style.display = 'block';
     outputSection.classList.add('visible');
@@ -473,11 +673,152 @@ Output EXACTLY this JSON structure, nothing else:
 function copyPrompt() {
   const text = document.getElementById('promptBox').textContent;
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.copy-btn');
+    const btn = document.getElementById('copyBtn');
     btn.textContent = 'Copied ✓';
     setTimeout(() => btn.textContent = 'Copy', 1800);
   });
 }
+
+/* ---------- Cloud-synced library ---------- */
+
+async function pushLibrary() {
+  setSync('busy', 'saving…');
+  try {
+    const res = await fetch(WORKER + '/prompts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'x-app-password': appPassword },
+      body: JSON.stringify(library)
+    });
+    if (!res.ok) throw new Error();
+    setSync('', 'synced');
+    return true;
+  } catch {
+    setSync('off', 'not saved');
+    return false;
+  }
+}
+
+async function refreshLibrary() {
+  setSync('busy', 'loading…');
+  try {
+    const res = await fetch(WORKER + '/prompts', { headers: { 'x-app-password': appPassword } });
+    if (!res.ok) throw new Error();
+    library = await res.json();
+    setSync('', 'synced');
+    renderLibrary();
+  } catch {
+    setSync('off', 'offline');
+  }
+}
+
+async function savePrompt() {
+  if (!currentResult) return;
+  const suggested = currentResult.task.slice(0, 45).replace(/\s+/g, ' ').trim();
+  const name = window.prompt('Name this prompt:', suggested);
+  if (name === null) return;
+
+  library.unshift({
+    id: Date.now().toString(),
+    name: name.trim() || suggested || 'Untitled prompt',
+    date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+    ...currentResult
+  });
+
+  renderLibrary();
+  const ok = await pushLibrary();
+
+  const btn = document.getElementById('saveBtn');
+  btn.textContent = ok ? 'Saved ✓' : 'Failed';
+  setTimeout(() => btn.textContent = 'Save', 1800);
+}
+
+function loadSaved(id) {
+  const item = library.find(x => x.id === id);
+  if (!item) return;
+
+  document.getElementById('taskInput').value = item.task || '';
+  const toolSel = document.getElementById('toolSelect');
+  const goalSel = document.getElementById('goalSelect');
+  for (let o of toolSel.options) if (o.value === item.tool) toolSel.value = item.tool;
+  for (let o of goalSel.options) if (o.value === item.goal) goalSel.value = item.goal;
+
+  document.getElementById('promptBox').textContent = item.prompt || '';
+  document.getElementById('toolTag').textContent = item.target || item.tool || '—';
+  document.getElementById('strategyNote').textContent = item.strategy || '—';
+  document.getElementById('setupNote').textContent = item.setup || 'No setup needed — paste and go.';
+
+  currentResult = {
+    prompt: item.prompt, target: item.target, strategy: item.strategy,
+    setup: item.setup, task: item.task, tool: item.tool, goal: item.goal
+  };
+
+  document.getElementById('divider').style.display = 'block';
+  document.getElementById('outputSection').classList.add('visible');
+  document.getElementById('errorBox').classList.remove('visible');
+  document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function deleteSaved(id) {
+  const item = library.find(x => x.id === id);
+  if (!item) return;
+  if (!confirm(`Delete "${item.name}"?`)) return;
+  library = library.filter(x => x.id !== id);
+  renderLibrary();
+  await pushLibrary();
+}
+
+function copySaved(id, btn) {
+  const item = library.find(x => x.id === id);
+  if (!item) return;
+  navigator.clipboard.writeText(item.prompt).then(() => {
+    const original = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = original, 1500);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str == null ? '' : str;
+  return d.innerHTML;
+}
+
+function renderLibrary() {
+  const container = document.getElementById('libraryList');
+  const count = document.getElementById('libraryCount');
+
+  count.textContent = library.length ? `${library.length} saved` : '';
+
+  if (!library.length) {
+    container.innerHTML = '<div class="library-empty">Nothing saved yet — engineer a prompt and hit Save.</div>';
+    return;
+  }
+
+  container.innerHTML = library.map(item => `
+    <div class="saved-item">
+      <div class="saved-top">
+        <div class="saved-meta">
+          <div class="saved-name">${escapeHtml(item.name)}</div>
+          <div class="saved-sub">${escapeHtml(item.target || item.tool || '')} · ${escapeHtml(item.date || '')}</div>
+        </div>
+        <div class="saved-actions">
+          <button class="mini-btn" onclick="loadSaved('${item.id}')">Open</button>
+          <button class="mini-btn" onclick="copySaved('${item.id}', this)">Copy</button>
+          <button class="mini-btn danger" onclick="deleteSaved('${item.id}')">Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* Refresh from cloud when returning to the tab */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && appPassword && !document.getElementById('app').classList.contains('hidden')) {
+    refreshLibrary();
+  }
+});
+
+boot();
 </script>
 </body>
 </html>
